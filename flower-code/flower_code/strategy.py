@@ -84,7 +84,7 @@ class FlowerTuneLlm_FlexLoRA(FedAvg):
         return return_clients
 
     def distribute_weight_fast(self, svd_weights, max_rank):
-        u, s, v = torch.svd(torch.tensor(svd_weights, device='cuda:1'))
+        u, s, v = torch.svd(torch.tensor(svd_weights, device='cuda'))
         U = u[:, :max_rank]
         S = s[:max_rank]
         V = v.T[:max_rank, :]
@@ -130,7 +130,7 @@ class FlowerTuneLlm_FlexLoRA(FedAvg):
             mul_params = []
             if len(bis_list) == 0:
                 for A_weights, B_weights in zip(LoRA_A_list, LoRA_B_list):
-                    W = torch.matmul(torch.tensor(B_weights, device='cuda:1'), torch.tensor(A_weights, device='cuda:1'))
+                    W = torch.matmul(torch.tensor(B_weights, device='cuda'), torch.tensor(A_weights, device='cuda'))
                     mul_params.append(W.detach().cpu().numpy())
                 fit_res_params.append(mul_params)
             else:
